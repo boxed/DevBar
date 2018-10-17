@@ -1,0 +1,69 @@
+{
+    "data": {
+        "needs_work": [
+            {
+                "title": "Trying to fix the gadget widget",
+                "url": "https://github.com/example/prs/1",
+            }
+        ],
+        "other_problems": [],
+        "waiting_for_review": [
+            {
+                "title": "Stop the crashing",
+                "url": "https://github.com/example/prs/2",
+            },
+            {
+                "title": "Cool new feature",
+                "url": "github.com/example/prs/3",
+            }
+        ],
+        "devtest": [],
+        "ready_to_merge": [],
+        "workflow_problem": [],
+        "wip": []
+    },
+    "metadata": {
+        "display": {
+            "prod_crash": {
+                "priority": 0,
+                "symbol": "💥",
+                "title": "💥 Prod crash"
+            },
+            "other_problems": {
+                "priority": 10,
+                "symbol": "😟",
+                "title": "😟 Other problems"
+            },
+            "waiting_for_review": {
+                "priority": 10,
+                "symbol": "🕐",
+                "title": "🕐 Waiting for review"
+            },
+            "devtest": {
+                "priority": 10,
+                "symbol": "🧪",
+                "title": "🧪 Can be tested by developers"
+            },
+            "ready_to_merge": {
+                "priority": 10,
+                "symbol": "🎉",
+                "title": "🎉 Ready to merge"
+            },
+            "workflow_problem": {
+                "priority": 10,
+                "symbol": "🤨",
+                "title": "🤨 Workflow problem: should be 4EYE or ready for test"
+            },
+            "needs_work": {
+                "priority": 10,
+                "symbol": "👎",
+                "title": "👎 Needs work"
+            },            
+            "wip": {
+                "priority": 11,
+                "symbol": "🚧",
+                "title": "🚧 Work in progress"
+            }
+        }
+    }
+}
