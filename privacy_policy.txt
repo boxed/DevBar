@@ -1,0 +1,1 @@
+DevBar is a totally client side app. It sends your username to the URL you specify. No other data is collected or sent anywhere.
