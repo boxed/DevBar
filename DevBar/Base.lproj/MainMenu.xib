@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14313.18"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -628,7 +628,7 @@
                             <menuItem title="Show Sidebar" keyEquivalent="s" id="kIP-vf-haE">
                                 <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
                                 <connections>
-                                    <action selector="toggleSourceList:" target="-1" id="iwa-gc-5KM"/>
+                                    <action selector="toggleSidebar:" target="-1" id="iwa-gc-5KM"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Enter Full Screen" keyEquivalent="f" id="4J7-dP-txa">
@@ -684,25 +684,15 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="98" y="435" width="599" height="64"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1200" height="1897"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="777"/>
             <value key="minSize" type="size" width="599" height="64"/>
-            <value key="maxSize" type="size" width="480" height="62"/>
+            <value key="maxSize" type="size" width="599" height="64"/>
             <view key="contentView" id="0xe-2U-wwz">
                 <rect key="frame" x="0.0" y="0.0" width="599" height="64"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vyV-f7-a9R">
-                        <rect key="frame" x="18" y="22" width="37" height="17"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES"/>
-                        <textFieldCell key="cell" lineBreakMode="clipping" title="URL:" id="m0A-L3-L4S">
-                            <font key="font" usesAppearanceFont="YES"/>
-                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
-                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RFY-aq-qLu">
-                        <rect key="frame" x="61" y="20" width="518" height="22"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES"/>
+                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="RFY-aq-qLu">
+                        <rect key="frame" x="62" y="21" width="517" height="22"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="URK-z3-O50">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -716,9 +706,24 @@
                             </binding>
                         </connections>
                     </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="68L-3G-vsf">
+                        <rect key="frame" x="18" y="23" width="34" height="17"/>
+                        <textFieldCell key="cell" lineBreakMode="clipping" title="URL:" id="Ee9-uh-Dgr">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="68L-3G-vsf" firstAttribute="leading" secondItem="0xe-2U-wwz" secondAttribute="leading" constant="20" symbolic="YES" id="4Xi-fa-foy"/>
+                    <constraint firstItem="68L-3G-vsf" firstAttribute="centerY" secondItem="RFY-aq-qLu" secondAttribute="centerY" id="X5V-1j-xBA"/>
+                    <constraint firstAttribute="trailing" secondItem="RFY-aq-qLu" secondAttribute="trailing" constant="20" symbolic="YES" id="mfb-wV-S4M"/>
+                    <constraint firstItem="68L-3G-vsf" firstAttribute="centerY" secondItem="0xe-2U-wwz" secondAttribute="centerY" id="ntU-SA-4FS"/>
+                    <constraint firstItem="RFY-aq-qLu" firstAttribute="leading" secondItem="68L-3G-vsf" secondAttribute="trailing" constant="12" id="xdu-pE-eBp"/>
+                </constraints>
             </view>
-            <point key="canvasLocation" x="69" y="-152"/>
+            <point key="canvasLocation" x="68.5" y="-152"/>
         </window>
         <userDefaultsController representsSharedInstance="YES" id="hhu-dG-c3P"/>
     </objects>
