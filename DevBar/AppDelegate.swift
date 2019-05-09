@@ -131,17 +131,21 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         if menuOpen {
             return
         }
-        
         DispatchQueue.global(qos: .background).async {
             if var base_url = UserDefaults.standard.string(forKey: "url") {
                 // You need to create the file url.swift that looks like: let base_url = "https://some.server/"
                 if !base_url.hasSuffix("/") {
                     base_url += "/"
                 }
-                let url = URL(string: base_url + "\(NSUserName())")
+                guard let url = URL(string: base_url + "\(NSUserName())") else {
+                    DispatchQueue.main.async {
+                        self.updateMenu(result: nil)
+                    }
+                    return
+                }
                 
                 do {
-                    let webString = try String(contentsOf: url!)
+                    let webString = try String(contentsOf: url)
                     guard let json_data : Data = webString.data(using: .utf8) else { return }
                     
                     let result = try JSONDecoder().decode(Result.self, from: json_data)
@@ -152,6 +156,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                     
                 }
                 catch {
+                    DispatchQueue.main.async {
+                        self.updateMenu(result: nil)
+                    }
                 }
             }
             else {
