@@ -37,6 +37,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     var timer : Timer? = nil
     var menu: NSMenu = NSMenu()
     var menuOpen = false
+    var hasShownPreferences = false
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         statusBarItem.button?.title = ""
@@ -133,7 +134,6 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         }
         DispatchQueue.global(qos: .background).async {
             if var base_url = UserDefaults.standard.string(forKey: "url") {
-                // You need to create the file url.swift that looks like: let base_url = "https://some.server/"
                 if !base_url.hasSuffix("/") {
                     base_url += "/"
                 }
@@ -161,10 +161,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                     }
                 }
             }
-            else {
+            else if !self.hasShownPreferences {
                 DispatchQueue.main.async {
                     self.preferences()
                     self.updateMenu(result: nil)
+                    self.hasShownPreferences = true
                 }
             }
         }
