@@ -4,6 +4,9 @@
 
 DevBar is a workflow tool for developers. It watches a URL and displays a menu bar so you can easily see actions you can take, like pull requests that needs a review, PRs that have failing tests, etc.
 
+# Installation
+
+Install it from the AppStore: https://apps.apple.com/se/app/devbar/id1462747827?l=en&mt=12
 
 # Usage
 
