@@ -133,11 +133,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             return
         }
         DispatchQueue.global(qos: .background).async {
-            if var base_url = UserDefaults.standard.string(forKey: "url") {
-                if !base_url.hasSuffix("/") {
-                    base_url += "/"
-                }
-                guard let url = URL(string: base_url + "\(NSUserName())") else {
+            if let base_url = UserDefaults.standard.string(forKey: "url") {
+                guard let url = URL(string: base_url + "?username=\(NSUserName())") else {
                     DispatchQueue.main.async {
                         self.updateMenu(result: nil)
                     }
