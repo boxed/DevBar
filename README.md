@@ -84,3 +84,5 @@ Start DevBar. It will ask you for a URL to watch, and it will append your userna
 
 
 You can give it a spin by pointing it to the example.json file: `https://raw.githubusercontent.com/boxed/DevBar/master/example.json?`
+
+Your server can also respond with 503 to signal it's not ready yet. This is handy for when you have a cache that needs to be warmed up after the server side is restarted. Just return 503 until you're done and DevBar won't show the server as down but will just keep showing the data it had last time.
