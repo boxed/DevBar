@@ -140,23 +140,37 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                     }
                     return
                 }
-                
-                do {
-                    let webString = try String(contentsOf: url)
-                    guard let json_data : Data = webString.data(using: .utf8) else { return }
-                    
-                    let result = try JSONDecoder().decode(Result.self, from: json_data)
-                    
-                    DispatchQueue.main.async {
-                        self.updateMenu(result: result)
+                let request = URLRequest(url: url)
+                let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+                    if let response = response as? HTTPURLResponse {
+                        
+                        if response.statusCode == 503 {
+                            return
+                        }
+                        
+                       if error != nil {
+                            DispatchQueue.main.async {
+                                self.updateMenu(result: nil)
+                            }
+                            return
+                        }
+                        
+                        do {
+                            if let data = data {
+                                let result = try JSONDecoder().decode(Result.self, from: data)
+                                DispatchQueue.main.async {
+                                    self.updateMenu(result: result)
+                                }
+                            }
+                        }
+                        catch {
+                            DispatchQueue.main.async {
+                                self.updateMenu(result: nil)
+                            }
+                        }
                     }
-                    
                 }
-                catch {
-                    DispatchQueue.main.async {
-                        self.updateMenu(result: nil)
-                    }
-                }
+                task.resume()
             }
             else if !self.hasShownPreferences {
                 DispatchQueue.main.async {
