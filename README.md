@@ -10,7 +10,7 @@ Install it from the AppStore: https://apps.apple.com/se/app/devbar/id1462747827?
 
 # Usage
 
-Start DevBar. It will ask you for a URL to watch, and it will append your username to that url (so if you give it https://example.com/foo it will access https://example.com/foo/your-username). The endpoint should reply with a JSON document that looks something like this:
+Start DevBar. It will ask you for a URL to watch, and it will add a username query parameter (so if you give it https://example.com/foo it will access https://example.com/foo?username=username). The endpoint should reply with a JSON document that looks something like this:
 
 
 ```json
