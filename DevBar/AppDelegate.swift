@@ -44,9 +44,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         statusBarItem.menu = menu
         menu.delegate = self
         self.update()
+        
+        UserDefaults.standard.register(defaults: ["refresh_seconds": 1.0])
 
-        // update every second
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
+        var refresh_seconds = UserDefaults.standard.float(forKey: "refresh_seconds")
+        if refresh_seconds <= 0 {
+            refresh_seconds = 1
+        }
+        timer = Timer.scheduledTimer(timeInterval: TimeInterval(refresh_seconds), target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
@@ -74,7 +79,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
    
     func buildTitle(list: [PR], emoji: String) -> String{
         if !list.isEmpty {
-            return "  \(emoji) \(list.count)"
+            return #"  \#(emoji) \#(list.count > 1 ? String(list.count) : "")"#
         }
         return ""
     }
