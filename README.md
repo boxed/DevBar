@@ -30,7 +30,7 @@ Start DevBar. It will ask you for a URL to watch, and it will add a username que
             },
             {
                 "title": "Cool new feature",
-                "url": "github.com/example/prs/3",
+                "url": "https://github.com/example/prs/3",
             }
         ],
         "devtest": [],
