@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import IOKit.ps
 
 struct Display : Decodable {
     let symbol : String
@@ -38,6 +39,26 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     var menu: NSMenu = NSMenu()
     var menuOpen = false
     var hasShownPreferences = false
+    var requestInFlight = false
+    var lastFetchTime: Date = .distantPast
+    let batteryPollingInterval: TimeInterval = 30
+
+    func isOnBatteryPower() -> Bool {
+        guard let snapshot = IOPSCopyPowerSourcesInfo()?.takeRetainedValue(),
+              let sources = IOPSCopyPowerSourcesList(snapshot)?.takeRetainedValue() as? [Any],
+              !sources.isEmpty else {
+            return false  // Desktop Mac or unable to determine — assume AC
+        }
+        for source in sources {
+            if let info = IOPSGetPowerSourceDescription(snapshot, source as CFTypeRef)?.takeUnretainedValue() as? [String: Any],
+               let powerSource = info[kIOPSPowerSourceStateKey] as? String {
+                if powerSource == kIOPSBatteryPowerValue {
+                    return true
+                }
+            }
+        }
+        return false
+    }
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         statusBarItem.button?.title = ""
@@ -86,8 +107,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     
     @objc
     func open(sender: NSMenuItem) {
-        let pr = sender.representedObject as! PR
-        NSWorkspace.shared.open(URL(string: pr.url)!)
+        guard let pr = sender.representedObject as? PR,
+              let url = URL(string: pr.url) else { return }
+        NSWorkspace.shared.open(url)
     }
     
     @objc
@@ -137,29 +159,41 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         if menuOpen {
             return
         }
+        if requestInFlight {
+            return
+        }
+        if isOnBatteryPower() && Date().timeIntervalSince(lastFetchTime) < batteryPollingInterval {
+            return
+        }
+        lastFetchTime = Date()
+        requestInFlight = true
         DispatchQueue.global(qos: .background).async {
             if let base_url = UserDefaults.standard.string(forKey: "url") {
                 guard let url = URL(string: base_url + "?username=\(NSUserName())") else {
                     DispatchQueue.main.async {
+                        self.requestInFlight = false
                         self.updateMenu(result: nil)
                     }
                     return
                 }
                 let request = URLRequest(url: url)
                 let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+                    defer {
+                        DispatchQueue.main.async { self.requestInFlight = false }
+                    }
                     if let response = response as? HTTPURLResponse {
-                        
+
                         if response.statusCode == 503 {
                             return
                         }
-                        
+
                        if error != nil {
                             DispatchQueue.main.async {
                                 self.updateMenu(result: nil)
                             }
                             return
                         }
-                        
+
                         do {
                             if let data = data {
                                 let result = try JSONDecoder().decode(Result.self, from: data)
@@ -177,11 +211,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
                 }
                 task.resume()
             }
-            else if !self.hasShownPreferences {
+            else {
                 DispatchQueue.main.async {
-                    self.preferences()
-                    self.updateMenu(result: nil)
-                    self.hasShownPreferences = true
+                    self.requestInFlight = false
+                    if !self.hasShownPreferences {
+                        self.preferences()
+                        self.updateMenu(result: nil)
+                        self.hasShownPreferences = true
+                    }
                 }
             }
         }
